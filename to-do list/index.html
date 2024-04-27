@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>To-Do App</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+  .container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+  }
+  button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #45a049;
+  }
+  .task {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+  }
+  .task.completed {
+    text-decoration: line-through;
+    background-color: #ddd;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h2>To-Do App</h2>
+  <input type="text" id="taskInput" placeholder="Enter task...">
+  <button onclick="addTask()">Add Task</button>
+
+  <h3>Tasks</h3>
+  <div id="taskList"></div>
+
+  <h3>Completed Tasks</h3>
+  <div id="completedTaskList"></div>
+</div>
+
+<script>
+  function addTask() {
+    var taskInput = document.getElementById("taskInput");
+    var taskText = taskInput.value.trim();
+    if (taskText !== "") {
+      var timestamp = new Date().toLocaleString();
+      var task = { text: taskText, timestamp: timestamp, completed: false };
+      tasks.push(task);
+      taskInput.value = "";
+      renderTasks();
+    }
+  }
+
+  function toggleTaskCompletion(index) {
+    tasks[index].completed = !tasks[index].completed;
+    renderTasks();
+  }
+
+  function renderTasks() {
+    var taskListDiv = document.getElementById("taskList");
+    var completedTaskListDiv = document.getElementById("completedTaskList");
+    taskListDiv.innerHTML = "";
+    completedTaskListDiv.innerHTML = "";
+
+    tasks.forEach(function(task, index) {
+      var taskDiv = document.createElement("div");
+      taskDiv.classList.add("task");
+      if (task.completed) {
+        taskDiv.classList.add("completed");
+        completedTaskListDiv.appendChild(taskDiv);
+      } else {
+        taskListDiv.appendChild(taskDiv);
+      }
+
+      var checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.checked = task.completed;
+      checkbox.onclick = function() {
+        toggleTaskCompletion(index);
+      };
+      taskDiv.appendChild(checkbox);
+
+      var textSpan = document.createElement("span");
+      textSpan.textContent = task.text + " (Added: " + task.timestamp + ")";
+      taskDiv.appendChild(textSpan);
+    });
+  }
+
+  var tasks = [];
+  renderTasks();
+</script>
+</body>
+</html>
